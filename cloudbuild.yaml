@@ -13,7 +13,7 @@ steps:
       'run', 'deploy', 'javavulnerablelab',
       '--image', 'gcr.io/javavulnlab/github.com/saraiawolola/javavulnerablelab:$COMMIT_SHA',
       '--platform', 'managed',
-      '--region', 'europe-west2', # Change region as necessary
+      '--region', 'europe-west1', # Change region as necessary
       '--allow-unauthenticated'
     ]
 
