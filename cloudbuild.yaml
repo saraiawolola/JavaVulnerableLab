@@ -15,6 +15,7 @@ steps:
       - '-c'
       - |
         apt-get update && apt-get install -y gnupg && curl -sL https://static.snyk.io/cli/latest/snyk-linux | bash && \
+        chmod +x /root/.config/configstore/snyk-linux && \
         export PATH="$$PATH:/root/.config/configstore/snyk-linux" && \
         snyk auth ${_SUB_VALUE} && \
         snyk test
