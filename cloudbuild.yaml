@@ -16,6 +16,7 @@ steps:
         apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
         snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
         snyk test
+    secretEnv: ['SNYK_API_TOKEN']
 
   # Step 4: SonarQube code quality analysis (SAST)
   - name: 'gcr.io/cloud-builders/docker'
@@ -33,6 +34,7 @@ steps:
           -Dsonar.organization=gcpvulnlab \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=$(gcloud secrets versions access latest --secret=sonarqube-token)
+    secretEnv: ['SONARQUBE_TOKEN']
 
   # Step 5: OWASP ZAP DAST scan
   - name: 'owasp/zap2docker-stable'
@@ -64,9 +66,10 @@ steps:
       '--allow-unauthenticated'
     ]
 availableSecrets:
-  secretEnv:
-    SNYK_API_TOKEN: snyk-api-token
-    SONARQUBE_TOKEN: sonarqube-token
+  - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
+    env:SNYK_API_TOKEN
+  - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
+    env:SONARQUBE_TOKEN
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
