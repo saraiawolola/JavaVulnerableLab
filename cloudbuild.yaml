@@ -15,7 +15,7 @@ steps:
       - '-c'
       - |
         apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
-        snyk auth $SNYK_API_TOKEN && \
+        snyk auth ${_SUB_VALUE} && \
         snyk test
 
   # Step 4: SonarQube code quality analysis (SAST)
@@ -61,6 +61,7 @@ steps:
 #     env: 'SONARQUBE-TOKEN'
 substitutions:
   _SNYK_API_TOKEN: ${SNYK_API_TOKEN}
+  _SUB_VALUE: SNYK_API_TOKEN
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
