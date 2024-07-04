@@ -15,9 +15,8 @@ steps:
       - '-c'
       - |
         apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
-        snyk auth $(gcloud secrets versions access latest --secret=~/snyk-api-token) && \
+        snyk auth $SNYK_API_TOKEN && \
         snyk test
-    secretEnv: ['SNYK_API_TOKEN']
 
   # Step 4: SonarQube code quality analysis (SAST)
   # - name: maven:3-jdk-11
@@ -55,11 +54,13 @@ steps:
       '--region', 'europe-west1', # Change region as necessary
       '--allow-unauthenticated'
     ]
-availableSecrets:
-  - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
-    env: 'SNYK_API_TOKEN'
-  - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
-    env: 'SONARQUBE-TOKEN'
+# availableSecrets:
+#   - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
+#     env: 'SNYK_API_TOKEN'
+#   - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
+#     env: 'SONARQUBE-TOKEN'
+substitutions:
+  _SNYK_API_TOKEN: ${SNYK_API_TOKEN}
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
