@@ -15,7 +15,7 @@ steps:
     args: [
       '-c',
       'apt-get update && apt-get install -y gnupg && curl -sLO https://static.snyk.io/cli/latest/snyk-linux && \
-      chmod +x snyk-linux && mv snyk-linux /usr/local/bin/snyk && \
+      mv snyk-linux /usr/local/bin/snyk && \
       snyk auth $$SNYK_API_TOKEN && snyk test'
     ]
 
