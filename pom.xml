@@ -42,13 +42,13 @@
 </dependency>	 	
   </dependencies>
   
-<finalName>JavaVulnerableLab</finalName>
 <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 </properties>
 <build>
-  <plugins>
+<finalName>JavaVulnerableLab</finalName>
+<plugins>
       <!-- Snyk Plugin -->
       <plugin>
           <groupId>io.snyk</groupId>
