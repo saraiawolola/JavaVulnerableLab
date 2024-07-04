@@ -7,6 +7,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/javavulnlab/github.com/saraiawolola/javavulnerablelab:$COMMIT_SHA']
 
+
   # Step 3: Snyk security scan (SCA)
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
@@ -16,7 +17,7 @@ steps:
         apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
         snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
         snyk test
-    secretEnv: ['SNYK-API-TOKEN']
+    secretEnv: ['SNYK_API_TOKEN']
 
   # Step 4: SonarQube code quality analysis (SAST)
   # - name: maven:3-jdk-11
@@ -55,10 +56,14 @@ steps:
       '--allow-unauthenticated'
     ]
 availableSecrets:
-  - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
-    env: 'SNYK-API-TOKEN'
-  - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
-    env: 'SONARQUBE-TOKEN'
+  secretManager:
+    secrets:
+      - secret: snyk-api-token
+        version: 1
+        env: 'SNYK_API_TOKEN'
+      - secret: sonarqube-token
+        version: 1
+        env: 'SONARQUBE_TOKEN'
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
