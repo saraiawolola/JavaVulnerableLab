@@ -8,53 +8,42 @@ steps:
     args: ['push', 'gcr.io/javavulnlab/github.com/saraiawolola/javavulnerablelab:$COMMIT_SHA']
 
   # Step 3: Snyk security scan (SCA)
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
-        snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
-        snyk test
-    secretEnv: ['SNYK_API_TOKEN']
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   entrypoint: 'bash'
+  #   args:
+  #     - '-c'
+  #     - |
+  #       apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
+  #       snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
+  #       snyk test
+  #   secretEnv: ['SNYK-API-TOKEN']
 
   # Step 4: SonarQube code quality analysis (SAST)
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y openjdk-11-jdk wget unzip && \
-        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && \
-        unzip sonar-scanner-cli-4.6.2.2472-linux.zip && \
-        export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin && \
-        sonar-scanner \
-          -Dsonar.projectKey=gcpvulnproject \
-          -Dsonar.sources=. \
-          -Dsonar.organization=gcpvulnlab \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$(gcloud secrets versions access latest --secret=sonarqube-token)
-    secretEnv: ['SONARQUBE_TOKEN']
+  - name: maven:3-jdk-11
+    entrypoint: mvn
+    args: ['verify', 'sonar:sonar','-Dsonar.host.url=https://sonarcloud.io','-Dsonar.organization=gcpvulnlab','-Dsonar.projectKey=gcpvulnproject','-Dsonar.login=$(gcloud secrets versions access latest --secret=sonarqube-token)']
+    secretEnv: ['SONARQUBE-TOKEN']
 
   # Step 5: OWASP ZAP DAST scan
-  - name: 'owasp/zap2docker-stable'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        zap.sh -daemon -port 8080 -config api.disablekey=true &
-        ZAP_PID=$!
-        sleep 30
-        zap-cli --zap-url http://localhost --zap-port 8080 status -t 120
-        zap-cli --zap-url http://localhost --zap-port 8080 open-url https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
-        zap-cli --zap-url http://localhost --zap-port 8080 spider https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
-        zap-cli --zap-url http://localhost --zap-port 8080 active-scan -r https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
-        zap-cli --zap-url http://localhost --zap-port 8080 report -o zap_report.html -f html
-        kill $ZAP_PID
+  # - name: 'owasp/zap2docker-stable'
+  #   entrypoint: 'sh'
+  #   args: [
+  #     - '-c',
+  #     - |
+  #       zap.sh -daemon -port 8080 -config api.disablekey=true &
+  #       ZAP_PID=$!
+  #       sleep 30
+  #       zap-cli --zap-url http://localhost --zap-port 8080 status -t 120
+  #       zap-cli --zap-url http://localhost --zap-port 8080 open-url https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
+  #       zap-cli --zap-url http://localhost --zap-port 8080 spider https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
+  #       zap-cli --zap-url http://localhost --zap-port 8080 active-scan -r https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
+  #       zap-cli --zap-url http://localhost --zap-port 8080 report -o zap_report.html -f html
+  #       kill $ZAP_PID
+  #   ]
 
   # Step 6: Upload ZAP report to Cloud Storage (Optional)
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'zap_report.html', 'gs://gcpvulnlab-reports/zap_report.html']
+  # - name: 'gcr.io/cloud-builders/gsutil'
+  #   args: ['cp', 'zap_report.html', 'gs://gcpvulnlab-reports/zap_report.html']
 
   # Step 7: Deploy the image to Google Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -67,9 +56,9 @@ steps:
     ]
 availableSecrets:
   - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
-    env: 'SNYK_API_TOKEN'
+    env: 'SNYK-API-TOKEN'
   - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
-    env: 'SONARQUBE_TOKEN'
+    env: 'SONARQUBE-TOKEN'
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
