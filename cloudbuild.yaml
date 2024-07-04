@@ -19,10 +19,10 @@ steps:
   #   secretEnv: ['SNYK-API-TOKEN']
 
   # Step 4: SonarQube code quality analysis (SAST)
-  - name: maven:3-jdk-11
-    entrypoint: mvn
-    args: ['verify', 'sonar:sonar','-Dsonar.host.url=https://sonarcloud.io','-Dsonar.organization=gcpvulnlab','-Dsonar.projectKey=gcpvulnproject','-Dsonar.login=$(gcloud secrets versions access latest --secret=sonarqube-token)']
-    secretEnv: ['SONARQUBE-TOKEN']
+  # - name: maven:3-jdk-11
+  #   entrypoint: mvn
+  #   args: ['verify', 'sonar:sonar','-Dsonar.host.url=https://sonarcloud.io','-Dsonar.organization=gcpvulnlab','-Dsonar.projectKey=gcpvulnproject','-Dsonar.login=$(gcloud secrets versions access latest --secret=sonarqube-token)']
+  #   secretEnv: ['SONARQUBE-TOKEN']
 
   # Step 5: OWASP ZAP DAST scan
   # - name: 'owasp/zap2docker-stable'
@@ -54,11 +54,11 @@ steps:
       '--region', 'europe-west1', # Change region as necessary
       '--allow-unauthenticated'
     ]
-availableSecrets:
-  # - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
-  #   env: 'SNYK-API-TOKEN'
-  - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
-    env: 'SONARQUBE-TOKEN'
+# availableSecrets:
+#   # - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
+#   #   env: 'SNYK-API-TOKEN'
+#   - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
+#     env: 'SONARQUBE-TOKEN'
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
