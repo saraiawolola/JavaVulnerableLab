@@ -15,7 +15,7 @@ steps:
       - '-c'
       - |
         apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
-        snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
+        snyk auth $(gcloud secrets versions access latest --secret=~/snyk-api-token) && \
         snyk test
     secretEnv: ['SNYK_API_TOKEN']
 
@@ -56,14 +56,10 @@ steps:
       '--allow-unauthenticated'
     ]
 availableSecrets:
-  secretManager:
-    secrets:
-      - secret: snyk-api-token
-        version: 1
-        env: 'SNYK_API_TOKEN'
-      - secret: sonarqube-token
-        version: 1
-        env: 'SONARQUBE_TOKEN'
+  - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
+    env: 'SNYK_API_TOKEN'
+  - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
+    env: 'SONARQUBE-TOKEN'
     # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
