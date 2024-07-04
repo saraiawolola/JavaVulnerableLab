@@ -59,6 +59,33 @@
         </apiToken>
       </configuration>
     </plugin>
+    <!-- install owasp zap plugin --> 
+    <plugin>
+      <groupId>org.zaproxy</groupId>
+      <artifactId>zap-maven-plugin</artifactId>
+      <version>1.0.0</version>
+      <executions>
+        <execution>
+          <id>zap-scan</id>
+          <phase>verify</phase>
+          <goals>
+              <goal>start</goal>
+              <goal>spider</goal>
+              <goal>active-scan</goal>
+              <goal>report</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <host>localhost</host>
+        <port>8080</port>
+        <target>${project.build.directory}/${project.build.finalName}</target>
+        <timeoutInSec>120</timeoutInSec>
+        <maxAlertsToInclude>100</maxAlertsToInclude>
+        <reportType>html</reportType>
+        <!-- <reportFile>${project.build.directory}/zap-report.html</reportFile> -->
+      </configuration>
+    </plugin>
     </plugins>
 
 </build>
