@@ -19,10 +19,10 @@ steps:
         mv snyk-linux /usr/local/bin/snyk && \
         snyk auth $$SNYK_API_TOKEN && \
         snyk test
-    secretEnv: ['SNYK_API_TOKEN']
+    # secretEnv: ['SNYK_API_TOKEN']
   availableSecrets:
   secretManager:
-  - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
+  - versionName: projects/714945281101/secrets/snykapi/versions/1
     env: 'SNYK_API_TOKEN'
 
   # # Step 4: SonarQube code quality analysis (SAST)
