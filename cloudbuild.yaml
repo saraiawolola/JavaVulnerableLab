@@ -19,11 +19,6 @@ steps:
       snyk auth $$SNYK_API_TOKEN && snyk test'
     ]
 
-  # availableSecrets:
-  #   secretManager:
-  #   - versionName: projects/714945281101/secrets/snykapi/versions/1
-  #     env: 'SNYK_API_TOKEN'
-
   # # Step 4: SonarQube code quality analysis (SAST)
   # - name: maven:3-jdk-11
   #   entrypoint: mvn
@@ -72,5 +67,9 @@ steps:
 # substitutions:
 #   _SUB_VALUE: SNYK_API_TOKEN
     # Logging options
+availableSecrets:
+  secretManager:
+  - versionName: projects/714945281101/secrets/snykapi/versions/1
+    env: 'SNYK_API_TOKEN'
 options:
   logging: CLOUD_LOGGING_ONLY
