@@ -22,9 +22,9 @@ steps:
         snyk test
     
   availableSecrets:
-  secretManager:
-  - versionName: projects/714945281101/secrets/snykapi/versions/1
-    env: 'SNYK_API_TOKEN'
+    secretManager:
+    - versionName: projects/714945281101/secrets/snykapi/versions/1
+      env: 'SNYK_API_TOKEN'
 
   # # Step 4: SonarQube code quality analysis (SAST)
   # - name: maven:3-jdk-11
