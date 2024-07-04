@@ -15,8 +15,7 @@ steps:
       - '-c'
       - |
         apt-get update && apt-get install -y gnupg && curl -sL https://static.snyk.io/cli/latest/snyk-linux | bash && \
-        export SNYK_PATH="/root/.config/configstore/snyk-linux" && \
-        export PATH="$SNYK_PATH:$PATH" && \
+        export PATH="$$PATH:/root/.config/configstore/snyk-linux" && \
         snyk auth ${_SUB_VALUE} && \
         snyk test
 
@@ -62,7 +61,6 @@ steps:
 #   - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
 #     env: 'SONARQUBE-TOKEN'
 substitutions:
-  _SNYK_API_TOKEN: ${SNYK_API_TOKEN}
   _SUB_VALUE: SNYK_API_TOKEN
     # Logging options
 options:
