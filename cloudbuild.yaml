@@ -8,15 +8,15 @@ steps:
     args: ['push', 'gcr.io/javavulnlab/github.com/saraiawolola/javavulnerablelab:$COMMIT_SHA']
 
   # Step 3: Snyk security scan (SCA)
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
-  #       snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
-  #       snyk test
-  #   secretEnv: ['SNYK-API-TOKEN']
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
+        snyk auth $(gcloud secrets versions access latest --secret=snyk-api-token) && \
+        snyk test
+    secretEnv: ['SNYK-API-TOKEN']
 
   # Step 4: SonarQube code quality analysis (SAST)
   # - name: maven:3-jdk-11
