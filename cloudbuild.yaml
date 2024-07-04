@@ -14,9 +14,9 @@ steps:
     args:
       - '-c'
       - |
-        apt-get update && apt-get install -y gnupg && curl -sL https://static.snyk.io/cli/latest/snyk-linux | bash && \
-        chmod +x /root/.config/configstore/snyk-linux && \
-        export PATH="$$PATH:/root/.config/configstore/snyk-linux" && \
+        apt-get update && apt-get install -y gnupg && curl -sLO https://static.snyk.io/cli/latest/snyk-linux | bash && \
+        chmod +x snyk-linux && \
+        mv snyk-linux /usr/local/bin/snyk && \
         snyk auth ${_SUB_VALUE} && \
         snyk test
 
