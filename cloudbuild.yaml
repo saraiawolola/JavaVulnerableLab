@@ -12,13 +12,13 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     secretEnv: ['SNYK_API_TOKEN']
-    args: [
+    args: 
       '-c',
-      'apt-get update && apt-get install -y gnupg && curl -sLO https://static.snyk.io/cli/latest/snyk-linux && \
-      mv snyk-linux /usr/local/bin/snyk && \
-      snyk auth $$SNYK_API_TOKEN && snyk test'
-    ]
-
+      - |
+        apt-get update && apt-get install -y gnupg && curl -sLO https://static.snyk.io/cli/latest/snyk-linux && \
+        /usr/local/bin/mv snyk-linux /usr/local/bin/snyk && \
+        snyk auth $$SNYK_API_TOKEN && snyk test
+      
   # # Step 4: SonarQube code quality analysis (SAST)
   # - name: maven:3-jdk-11
   #   entrypoint: mvn
