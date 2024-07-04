@@ -14,7 +14,7 @@ steps:
     args:
       - '-c'
       - |
-        apt-get update && apt-get install -y gnupg && curl -sL https://snyk.io/get-cli | bash && \
+        apt-get update && apt-get install -y gnupg && curl -sL https://static.snyk.io/cli/latest/snyk-linux | bash && \
         snyk auth ${_SUB_VALUE} && \
         snyk test
 
