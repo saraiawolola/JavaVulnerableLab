@@ -30,7 +30,7 @@ steps:
   # Step 5: OWASP ZAP DAST scan
   - name: 'owasp/zap2docker-stable'
     entrypoint: 'sh'
-    args: [
+    args: 
       - '-c',
       - |
         zap.sh -daemon -port 8080 -config api.disablekey=true &
@@ -42,8 +42,7 @@ steps:
         zap-cli --zap-url http://localhost --zap-port 8080 active-scan -r https://javavulnerablelab-vfwdrvs6yq-ew.a.run.app
         zap-cli --zap-url http://localhost --zap-port 8080 report -o zap_report.html -f html
         kill $$ZAP_PID
-    ]
-
+    
   # Step 6: Upload ZAP report to Cloud Storage (Optional)
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', 'zap_report.html', 'gs://gcpvulnlab-reports/zap_report.html']
