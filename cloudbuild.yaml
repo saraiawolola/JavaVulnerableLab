@@ -11,6 +11,7 @@ steps:
   # Step 3: Snyk security scan (SCA)
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
+    secretEnv: ['SNYK_API_TOKEN']
     args:
       - '-c'
       - |
@@ -19,7 +20,7 @@ steps:
         mv snyk-linux /usr/local/bin/snyk && \
         snyk auth $$SNYK_API_TOKEN && \
         snyk test
-    # secretEnv: ['SNYK_API_TOKEN']
+    
   availableSecrets:
   secretManager:
   - versionName: projects/714945281101/secrets/snykapi/versions/1
