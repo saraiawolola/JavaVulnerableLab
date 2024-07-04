@@ -12,15 +12,13 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     secretEnv: ['SNYK_API_TOKEN']
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y gnupg && curl -sLO https://static.snyk.io/cli/latest/snyk-linux | bash && \
-        chmod +x snyk-linux && \
-        mv snyk-linux /usr/local/bin/snyk && \
-        snyk auth $$SNYK_API_TOKEN && \
-        snyk test
-    
+    args: [
+      '-c',
+      'apt-get update && apt-get install -y gnupg && curl -sLO https://static.snyk.io/cli/latest/snyk-linux && \
+      chmod +x snyk-linux && mv snyk-linux /usr/local/bin/snyk && \
+      snyk auth $$SNYK_API_TOKEN && snyk test'
+    ]
+
   availableSecrets:
     secretManager:
     - versionName: projects/714945281101/secrets/snykapi/versions/1
