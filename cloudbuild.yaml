@@ -54,11 +54,11 @@ steps:
       '--region', 'europe-west1', # Change region as necessary
       '--allow-unauthenticated'
     ]
-# availableSecrets:
-#   # - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
-#   #   env: 'SNYK-API-TOKEN'
-#   - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
-#     env: 'SONARQUBE-TOKEN'
-    # Logging options
+availableSecrets:
+  - versionName: projects/714945281101/secrets/snyk-api-token/versions/1
+    env: 'SNYK-API-TOKEN'
+  - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
+    env: 'SONARQUBE-TOKEN'
+    Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
