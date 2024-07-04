@@ -59,6 +59,6 @@ availableSecrets:
     env: 'SNYK-API-TOKEN'
   - versionName: projects/714945281101/secrets/sonarqube-token/versions/1
     env: 'SONARQUBE-TOKEN'
-    Logging options
+    # Logging options
 options:
   logging: CLOUD_LOGGING_ONLY
